@@ -24,7 +24,9 @@ export const typeDefs = `#graphql
 
   type Query{
     games:[Game]
+    game(id:ID!): Game
     reviews:[Review]
+    review(id:ID!): Review
     authors: [Author]
   }
 `;
@@ -178,8 +180,11 @@ const resolvers = {
     // },
     Query: {
         games: () => games,
+        game: (_, args) => games.find((game) => game.id === args.id),
         authors: () => authors,
         reviews: () => reviews,
+        //this is for a single data request from the reviews.
+        review: (_, args) => reviews.find((review) => review.id === args.id),
     },
 };
 // The ApolloServer constructor requires two parameters: your schema
