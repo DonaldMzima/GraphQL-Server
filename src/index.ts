@@ -25,7 +25,9 @@ export const typeDefs = `#graphql
 
   type Query{
     games:[Game]
+    game(id:ID!): Game
     reviews:[Review]
+    review(id:ID!): Review
     authors: [Author]
   }
 `
@@ -183,8 +185,13 @@ const resolvers = {
   // },
   Query: {
     games: () => games,
+    game: (_: any, args: { id: any }) =>
+      games.find((game) => game.id === args.id),
     authors: () => authors,
     reviews: () => reviews,
+    //this is for a single data request from the reviews.
+    review: (_: any, args: { id: any }) =>
+      reviews.find((review) => review.id === args.id),
   },
 }
 
