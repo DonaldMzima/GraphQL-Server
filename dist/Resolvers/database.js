@@ -1,33 +1,4 @@
-import { ApolloServer } from '@apollo/server';
-import { startStandaloneServer } from '@apollo/server/standalone';
-// A schema is a collection of type definitions (hence "typeDefs")
-// that together define the "shape" of queries that are executed against
-// your data.
-export const typeDefs = `#graphql
-  type Game{
-    id:ID!,
-    title:String!,
-    plartform:[String!]!   
-  }
-  
-  type Review{
-    id:ID!,
-    rating:Int!,
-    contant:[String!]!   
-  }
-
-  type Author{
-    id:ID!,
-    name:String!,
-    verified:Boolean!   
-  }
-
-  type Query{
-    games:[Game]
-    reviews:[Review]
-    authors: [Author]
-  }
-`;
+// Define sample data for Game, Review, and Author
 const games = [
     {
         id: '1',
@@ -170,29 +141,5 @@ const reviews = [
         gameId: '8',
     },
 ];
-// Resolvers define how to fetch the types defined in your schema.
-// This resolver retrieves books from the "books" array above.
-const resolvers = {
-    // Query: {
-    //   books: () => books,
-    // },
-    Query: {
-        games: () => games,
-        authors: () => authors,
-        reviews: () => reviews,
-    },
-};
-// The ApolloServer constructor requires two parameters: your schema
-// definition and your set of resolvers.
-const server = new ApolloServer({
-    typeDefs,
-    resolvers,
-});
-// Passing an ApolloServer instance to the `startStandaloneServer` function:
-//  1. creates an Express app
-//  2. installs your ApolloServer instance as middleware
-//  3. prepares your app to handle incoming requests
-const { url } = await startStandaloneServer(server, {
-    listen: { port: 8080 },
-});
-console.log(`🚀  Server ready at: ${url}`);
+// Export the data as an object
+export default { games, authors, reviews };

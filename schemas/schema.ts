@@ -1,7 +1,7 @@
 export const typeDefs = `#graphql
   type Game{
     id:ID!,
-    title:Sting!,
+    title:String!,
     plartform:[String!]!   
   }
   
@@ -20,6 +20,6 @@ export const typeDefs = `#graphql
   type Query{
     games:[Game]
     reviews:[Review]
-    author: [Author]
+    authors: [Author]
   }
 `
