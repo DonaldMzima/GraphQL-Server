@@ -8,19 +8,23 @@ export const typeDefs = `#graphql
   type Game{
     id:ID!,
     title:String!,
-    plartform:[String!]!   
+    plartform:[String!]! 
+    review : [Review!]  
   }
   
   type Review{
     id:ID!,
     rating:Int!,
-    contant:[String!]!   
+    contant:[String!]! 
+    game : Game!
+    author :  Author!
   }
 
   type Author{
     id:ID!,
     name:String!,
-    verified:Boolean!   
+    verified:Boolean! 
+    review : [Review!]  
   }
 
   type Query{
@@ -185,14 +189,17 @@ const resolvers = {
   // },
   Query: {
     games: () => games,
-    game: (_: any, args: { id: any }) =>
+    game: (_: unknown, args: { id: any }) =>
       games.find((game) => game.id === args.id),
     authors: () => authors,
     reviews: () => reviews,
     //this is for a single data request from the reviews.
-    review: (_: any, args: { id: any }) =>
+    review: (_: unknown, args: { id: string }) =>
       reviews.find((review) => review.id === args.id),
   },
+  // Game: {
+  //   reviews: (parent: any) => reviews.filter((r) => r.gameId === parent.id),
+  // },
 }
 
 // The ApolloServer constructor requires two parameters: your schema
