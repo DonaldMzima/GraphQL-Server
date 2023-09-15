@@ -7,19 +7,23 @@ export const typeDefs = `#graphql
   type Game{
     id:ID!,
     title:String!,
-    plartform:[String!]!   
+    plartform:[String!]! 
+    review : [Review!]  
   }
   
   type Review{
     id:ID!,
     rating:Int!,
-    contant:[String!]!   
+    contant:[String!]! 
+    game : Game!
+    author :  Author!
   }
 
   type Author{
     id:ID!,
     name:String!,
-    verified:Boolean!   
+    verified:Boolean! 
+    review : [Review!]  
   }
 
   type Query{
@@ -186,6 +190,9 @@ const resolvers = {
         //this is for a single data request from the reviews.
         review: (_, args) => reviews.find((review) => review.id === args.id),
     },
+    // Game: {
+    //   reviews: (parent: any) => reviews.filter((r) => r.gameId === parent.id),
+    // },
 };
 // The ApolloServer constructor requires two parameters: your schema
 // definition and your set of resolvers.
@@ -201,3 +208,6 @@ const { url } = await startStandaloneServer(server, {
     listen: { port: 8080 },
 });
 console.log(`🚀  Server ready at: ${url}`);
+function r(value, index, array) {
+    throw new Error('Function not implemented.');
+}
