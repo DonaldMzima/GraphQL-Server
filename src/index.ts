@@ -5,33 +5,33 @@ import { startStandaloneServer } from '@apollo/server/standalone'
 // that together define the "shape" of queries that are executed against
 // your data.
 export const typeDefs = `#graphql
-  type Game{
-    id:ID!,
-    title:String!,
-    plartform:[String!]! 
-    review : [Review!]  
+  type Game {
+    id: ID!
+    title: String!
+    platform: [String!]!
+    reviews: [Review!]  # Add the reviews field here
   }
   
-  type Review{
-    id:ID!,
-    rating:Int!,
-    contant:[String!]! 
-    game : Game!
-    author :  Author!
+  type Review {
+    id: ID!
+    rating: Int!
+    content: [String!]!
+    game: Game!
+    author: Author!
   }
 
-  type Author{
-    id:ID!,
-    name:String!,
-    verified:Boolean! 
-    review : [Review!]  
+  type Author {
+    id: ID!
+    name: String!
+    verified: Boolean!
+    reviews: [Review!]  
   }
 
-  type Query{
-    games:[Game]
-    game(id:ID!): Game
-    reviews:[Review]
-    review(id:ID!): Review
+  type Query {
+    games: [Game]
+    game(id: ID!): Game
+    reviews: [Review]
+    review(id: ID!): Review
     authors: [Author]
   }
 `
@@ -197,9 +197,21 @@ const resolvers = {
     review: (_: unknown, args: { id: string }) =>
       reviews.find((review) => review.id === args.id),
   },
-  // Game: {
-  //   reviews: (parent: any) => reviews.filter((r) => r.gameId === parent.id),
-  // },
+
+  //related resolvers are declared inside query because they are entry points to graph.
+  Game: {
+    //parent query for a single.
+    reviews: (parent: any) => reviews.filter((r) => r.gameId === parent.id),
+  },
+
+  Author: {
+    reviews: (parent: any) => reviews.filter((r) => r.authorId === parent.id),
+  },
+
+  Review: {
+    author: (parent: any) => authors.filter((a) => a.id === parent.authorId),
+    game: (parent: any) => games.filter((g) => g.id === parent.gameId),
+  },
 }
 
 // The ApolloServer constructor requires two parameters: your schema
