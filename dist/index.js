@@ -8,7 +8,7 @@ export const typeDefs = `#graphql
     id: ID!
     title: String!
     platform: [String!]!
-    reviews: [Review!]  # Add the reviews field here
+    reviews: [Review!]  
   }
   
   type Review {
