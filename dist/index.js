@@ -33,8 +33,12 @@ export const typeDefs = `#graphql
     review(id: ID!): Review
     authors: [Author]
   }
+
+  type Mutation {
+    deleteGame(id: ID!): [Game]
+  }
 `;
-const games = [
+let games = [
     {
         id: '1',
         title: 'Game 1',
@@ -201,6 +205,12 @@ const resolvers = {
     Review: {
         author: (parent) => authors.filter((a) => a.id === parent.authorId),
         game: (parent) => games.filter((g) => g.id === parent.gameId),
+    },
+    Mutation: {
+        deleteGame(_, args) {
+            games = games.filter((g) => g.id !== args.id); //use !== so that it return false
+            return games;
+        },
     },
 };
 // The ApolloServer constructor requires two parameters: your schema

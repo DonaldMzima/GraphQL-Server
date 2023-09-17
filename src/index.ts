@@ -36,8 +36,15 @@ export const typeDefs = `#graphql
   }
 
   type Mutation {
-    deleteGames(id: ID!): [Game]
+    addGame (game : AddGameInput) : Game
+    deleteGame(id: ID!): [Game]
   }
+  
+  input AddGameInput {
+    title: String!
+    platform: [String!]!
+  }
+
 `
 
 let games = [
@@ -218,10 +225,23 @@ const resolvers = {
   },
 
   Mutation: {
+    // This defines a GraphQL mutation named "deleteGame."
     deleteGame(_: unknown, args: any) {
-      games = games.filter((g) => g.id !== args.id) //use !== so that it return false
+      // This is the resolver function for the "deleteGame" mutation.
+      games = games.filter((g) => g.id !== args.id) // This line removes a game from the "games" array based on the provided "args.id."
+      // The filter function checks each game's "id" against the provided "args.id" and keeps only those where they are not equal (!==).
 
-      return games
+      return games // After the game is deleted, the updated "games" array is returned.
+    },
+
+    addGame(_: unknown, args: any) {
+      let game = {
+        ...args.game,
+        id: Math.floor(Math.random() * 1000).toString(),
+      }
+      games.push(game)
+
+      return game
     },
   },
 }
