@@ -36,6 +36,7 @@ export const typeDefs = `#graphql
   }
 
   type Mutation {
+    editGame(id: ID!,edit:EditGameInput!):Game
     addGame (game : AddGameInput) : Game
     deleteGame(id: ID!): [Game]
   }
@@ -43,6 +44,12 @@ export const typeDefs = `#graphql
   input AddGameInput {
     title: String!
     platform: [String!]!
+  }
+
+  input EditGameInput {
+    id :ID
+    title: String
+    platform: [String!]
   }
 
 `
@@ -242,6 +249,17 @@ const resolvers = {
       games.push(game)
 
       return game
+    },
+
+    editGame(_: unknown, args: any) {
+      games = games.map((g) => {
+        if (g.id === args.id) {
+          return { ...g, ...args.edit }
+        }
+        return g
+      })
+
+      return games.find((g) => g.id === args.id)
     },
   },
 }
