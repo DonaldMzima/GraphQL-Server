@@ -6,7 +6,8 @@
   "type": "module",
   "scripts": {
     "compile": "tsc",
-    "start": "yarn compile && node ./dist/index.js"
+    "start": "yarn compile && node ./dist/index.js",
+    "start:dev": "nodemon --watch 'src/**/*.ts' --exec 'yarn start'"
   },
   "dependencies": {
     "@apollo/server": "^4.9.3",
@@ -14,6 +15,7 @@
   },
   "devDependencies": {
     "@types/node": "^20.6.0",
-    "typescript": "^5.2.2"
+    "typescript": "^5.2.2",
+    "nodemon": "^2.0.15"
   }
 }

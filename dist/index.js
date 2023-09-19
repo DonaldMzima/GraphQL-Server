@@ -202,7 +202,10 @@ const resolvers = {
     // },
     Query: {
         games: () => games,
-        game: (_, args) => games.find((game) => game.id === args.id),
+        game(_, args) {
+            console.log('args', args);
+            return games.find((game) => game.id === args.id);
+        },
         authors: () => authors,
         reviews: () => reviews,
         //this is for a single data request from the reviews.
