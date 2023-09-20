@@ -1,6 +1,10 @@
 import { ApolloServer } from '@apollo/server'
 import { startStandaloneServer } from '@apollo/server/standalone'
+import { type } from 'os'
 
+type AguementType = {
+  id: string
+}
 // A schema is a collection of type definitions (hence "typeDefs")
 // that together define the "shape" of queries that are executed against
 // your data.
@@ -208,8 +212,13 @@ const resolvers = {
   Query: {
     games: () => games,
 
-    game(_: unknown, args: any) {
+    game(_: unknown, args: AguementType) {
       console.log('args', args)
+      console.log('games', games)
+      console.log(
+        'games',
+        games.find((game) => game.id === args.id),
+      )
       return games.find((game) => game.id === args.id)
     },
 
@@ -223,11 +232,13 @@ const resolvers = {
   //related resolvers are declared inside query because they are entry points to graph.
   Game: {
     //parent query for a single.
-    reviews: (parent: any) => reviews.filter((r) => r.gameId === parent.id),
+    reviews: (parent: AguementType) =>
+      reviews.filter((r) => r.gameId === parent.id),
   },
 
   Author: {
-    reviews: (parent: any) => reviews.filter((r) => r.authorId === parent.id),
+    reviews: (parent: AguementType) =>
+      reviews.filter((r) => r.authorId === parent.id),
   },
 
   Review: {
@@ -237,7 +248,7 @@ const resolvers = {
 
   Mutation: {
     // This defines a GraphQL mutation named "deleteGame."
-    deleteGame(_: unknown, args: any) {
+    deleteGame(_: unknown, args: AguementType) {
       // This is the resolver function for the "deleteGame" mutation.
       games = games.filter((g) => g.id !== args.id) // This line removes a game from the "games" array based on the provided "args.id."
       // The filter function checks each game's "id" against the provided "args.id" and keeps only those where they are not equal (!==).
