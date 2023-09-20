@@ -7,7 +7,7 @@
   "scripts": {
     "compile": "tsc",
     "start": "node your-start-file.js",
-    "dev": "nodemon --watch 'src/**/*.ts' --exec 'yarn start'"
+    "dev": "nodemon --watch 'src/**/*.ts' --exec 'node your-start-file.js'"
   },
   "dependencies": {
     "@apollo/server": "^4.9.3",
