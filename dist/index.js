@@ -204,6 +204,8 @@ const resolvers = {
         games: () => games,
         game(_, args) {
             console.log('args', args);
+            console.log('games', games);
+            console.log('games', games.find((game) => game.id === args.id));
             return games.find((game) => game.id === args.id);
         },
         authors: () => authors,
